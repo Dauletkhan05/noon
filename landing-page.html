@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaleScout - #1 Repricer for Noon Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+    <style>
+
+.modal {
+            display: none; /* Изначально скрыто */
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        }
+
+        /* Контент модального окна */
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Кнопка закрытия */
+        .close {
+            color: #aaa;
+            font-size: 30px;
+            font-weight: bold;
+            float: right;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Пространство между заголовками, текстами и формой */
+/* Пространство между заголовками, текстами и формой */
+h2, p {
+    margin-bottom: 20px; /* Оптимальный отступ снизу */
+}
+
+.contact-form .mb-4 {
+    margin-bottom: 20px; /* Увеличенный отступ между полями */
+}
+p.contact-info {
+    font-size: 14px; /* Делаем текст меньше */
+    color: rgba(0, 0, 0, 0.6); /* Немного прозрачный (60% черного) */
+    margin-bottom: 15px; /* Добавляем небольшой отступ снизу */
+}
+
+button[type="submit"] {
+    margin-top: 20px; /* Отступ сверху для кнопки */
+}
+
+/* Дополнительные отступы в полях формы */
+input[type="text"],
+input[type="email"],
+textarea {
+    margin-bottom: 15px; /* Отступ снизу для каждого поля */
+    padding: 10px; /* Умеренный внутренний отступ для комфортного ввода */
+    width: 100%; /* Чтобы поля были во всю ширину контейнера */
+    border: 1px solid #ccc; /* Легкая граница для визуального разделения */
+    border-radius: 5px; /* Закругленные углы */
+}
+
+
+        /* Стиль формы */
+        .contact-form input,
+        .contact-form button {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .contact-form button {
+            background-color: #ffd700;
+            color: white;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #ffd700;
+        }
+
+         /* Стили для рамки вокруг видео */
+         .video-container {
+            border: 10px solid black; /* Черная рамка толщиной 5px */
+            border-radius: 30px; /* Закругление углов */
+            display: inline-block; /* Чтобы рамка обвивала только видео */
+            padding: -20px; /* Отступы внутри рамки */
+        }
+
+        /* Настройки для самого видео */
+        .video-container video {
+            
+            width: 100%; /* Видео растягивается по ширине контейнера */
+            height: auto; /* Высота сохраняет пропорции */
+            border-radius: 20px; /* Закругление углов видео */
+        }
+        :root {
+            --primary: #ffd700;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            letter-spacing: -0.025em;
+        }
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        .text-primary {
+            color: var(--primary);
+        }
+        .hero-video {
+    flex: 0 0 40%; /* Видео будет занимать 40% ширины родительского контейнера */
+    display: flex;
+    justify-content: flex-end; /* Выравнивание видео по правому краю */
+    align-items: flex; /* Выровнять видео по верхнему краю */
+    height: 100%; /* Даем контейнеру полную высоту, чтобы видео выравнивалось по верху */
+}
+.hidden {
+        display: none;
+    }
+.video-preview__player {
+    width: 100%; /* Видео растягивается по ширине контейнера */
+    height: auto; /* Высота будет пропорциональна */
+    max-width: 100%; /* Убираем ограничение по ширине для видео */
+    max-height: 80vh; /* Ограничиваем максимальную высоту до 80% от высоты окна */
+    border-radius: 140px; /* Устанавливаем радиус округления для углов */
+}
+.bg-white:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Hero Section -->
+    <section class="relative py-20 bg-gradient-to-br from-yellow-100/20 to-yellow-50/5 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="flex-1 max-w-2xl">
+                    <h1 class="text-6xl font-bold mb-6 tracking-tight leading-[1.1]">
+                        Maximize Sales and Profits with the World's #1 <span class="text-primary">Repricer</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Automate price changes. Secure the Buy Box. Boost your sales on noon marketplace!
+                    </p>
+                    <div class="flex gap-4">
+                        <button id="openModalBtn" class="bg-primary text-black px-8 py-3 rounded-md text-lg font-semibold hover:bg-primary/90 transition-colors">
+                            Try SaleScout for free
+                        </button>
+                        <button class="border border-gray-300 px-8 py-3 rounded-md text-lg font-semibold hover:bg-gray-50 transition-colors">
+                            Book a demo →
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4">
+                        14-day trial | No credit card required | Guided setup
+                    </p>
+                </div>
+                <div class="video-container">
+                    <!-- Вставьте сюда свое видео -->
+                    <video class="video-preview__player" autoplay muted loop>
+                        <source src="14.mp4" type="video/mp4">
+                    </video>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+<!-- Модальное окно -->
+<div id="myModal" class="modal">
+
+    <!-- Контент модального окна -->
+    <div class="modal-content">
+        <span class="close" id="closeBtn">&times;</span>
+        <h1>Contact Us</h1>
+        <p class="contact-info">Leave your contact information and we'll get back to you shortly.</p>
+
+        <!-- Форма -->
+        <form class="contact-form">
+        
+            <label for="whatsapp">WhatsApp Number</label>
+            <input type="text" id="whatsapp" name="whatsapp" placeholder="Your WhatsApp Number" required>
+        
+            <label for="company">Shop Name</label>
+            <input type="text" id="company" name="company" placeholder="Your Shop Name" required>
+        
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+</div>
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold mb-2">500+</div>
+                    <div class="text-gray-600">Active Sellers</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">1M+</div>
+                    <div class="text-gray-600">Products Analyzed</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">30%</div>
+                    <div class="text-gray-600">Average Revenue Increase</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Why Choose Us?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Cards -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">AI-Powered Analytics</h3>
+                    </div>
+                    <p class="text-gray-600">Leverage machine learning algorithms to analyze market trends and optimize your pricing strategy.</p>
+                </div>
+                <!-- Repeat for other features -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">SEO Optimization</h3>
+                    </div>
+                    <p class="text-gray-600">Rank higher in search results with our advanced SEO strategies</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Sales Optimization</h3>
+                    </div>
+                    <p class="text-gray-600">Maximize your sales with dynamic pricing and inventory management</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Growth Strategy</h3>
+                    </div>
+                    <p class="text-gray-600">Develop a winning strategy based on market trends and competitor analysis</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Product and Price Monitoring</h3>
+                    </div>
+                    <p class="text-gray-600">Every 3 minutes, the bot checks each of your products on noon.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Auto Price Update
+                        </h3>
+                    </div>
+                    <p class="text-gray-600">If your competitors raise their prices, the bot automatically raises yours as well, increasing your margin while keeping you in the top position.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- FAQ Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div class="max-w-3xl mx-auto">
+            <div class="space-y-4">
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">What makes SaleScout different from other solutions?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        SaleScout combines AI-powered analytics with deep marketplace expertise specifically for Noon sellers. Our platform provides real-time price optimization, competitor tracking, and automated repricing to ensure you stay competitive.
+                    </div>
+                </div>
+                <!-- Repeat for other questions -->
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">Will anyone know my data?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        We understand your concerns about security and privacy, which is why all your data is encrypted and not shared with third parties.
+                    </div>
+                </div>
+                <!-- Add more FAQ items as needed -->
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">What if my competitors also use your system?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        Our system allows for flexible settings that can help you stay ahead of any competitor.
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">Is there support for setup?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        Yes. Our manager will personally connect with you and assist with the setup.
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">How quickly does the bot update prices?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        The bot reviews all your listings every 3-5 minutes and immediately sends a request to noon to apply the changes.
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">How many products can I add to the system?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        It depends on the selected plan.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    // Получаем элементы
+    const modal = document.getElementById("myModal");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    // Открыть модальное окно
+    openModalBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+    });
+
+    // Закрыть модальное окно
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // Закрыть окно, если пользователь кликнул за пределы модального окна
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+</script>
+
+    <script>
+        // Получаем все кнопки вопросов
+        const questionButtons = document.querySelectorAll('.question-toggle');
+        
+        questionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling; // Получаем следующий элемент, который содержит ответ
+                // Переключаем видимость ответа
+                answer.classList.toggle('hidden');
+            });
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4">SaleScout</h3>
+                    <p class="text-gray-600 mb-4">
+                        Empowering noon marketplace sellers with AI-driven insights and optimization tools.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-primary">
+                            <svg class="h-6 w-6" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary">
+                            <svg class="h-6 w-6" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary">
+                            <svg class="h-6 w-6" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-600 mb-6">
+                        <li>Dubai, UAE</li>
+                    </ul>
+                    <a href="https://api.whatsapp.com/send/?phone=77083330201&text&type=phone_number&app_absent=0" target="_blank" aria-label="Contact us via WhatsApp">
+                        <button class="bg-primary text-black px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
+                            Contact Us
+                        </button>
+                    </a>
+                    
+                      
+                    
+                </div>
+            </div>
+
+            
+        </div>
+    </footer>
+</body>
+</html>
