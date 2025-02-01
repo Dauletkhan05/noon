@@ -5,10 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SaleScout - #1 Repricer for Noon Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 
     <style>
+
+.receive-alerts {
+    text-align: center; /* Центрирование заголовка и кнопки */
+    margin-top: 20px;
+}
+
+.open-modal-btn {
+    font-size: 18px;
+    padding: 12px 30px;
+    background-color: #ffd700; /* Синий цвет */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.open-modal-btn:hover {
+    background-color: #ffd650; /* Темнее при наведении */
+    transform: scale(1.05);
+}
+
+
+
+.whatsapp-button {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали (если нужно) */
+    width: 100%; /* Растягивание блока на всю ширину */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.whatsapp-button a {
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+}
+
+.whatsapp-button button {
+    font-size: 20px; /* Увеличенный размер текста */
+    padding: 15px 40px; /* Увеличенный размер кнопки */
+    background-color: #25D366; /* Цвет WhatsApp */
+    color: white; /* Белый текст */
+    border: none;
+    border-radius: 8px; /* Закругление краёв */
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    margin-top: 50px; /* Смещаем кнопку вниз на 50px (можно менять это значение) */
+}
+
+.whatsapp-button button:hover {
+    background-color: #1ebd5b; /* Немного темнее при наведении */
+    transform: scale(1.1); /* Лёгкое увеличение */
+}
+
+
 
 .modal {
             display: none; /* Изначально скрыто */
@@ -49,6 +106,11 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+
+
+
+        
         /* Пространство между заголовками, текстами и формой */
 /* Пространство между заголовками, текстами и формой */
 h2, p {
@@ -311,6 +373,12 @@ textarea {
                     <p class="text-gray-600">If your competitors raise their prices, the bot automatically raises yours as well, increasing your margin while keeping you in the top position.</p>
                 </div>
             </div>
+            <div class="receive-alerts">
+                <button class="open-modal-btn">
+                    <span>Receive alerts right now!</span>
+                </button>
+            </div>
+            
         </div>
     </section>
 
@@ -390,31 +458,59 @@ textarea {
                 </div>
             </div>
         </div>
+        <div class="button-container">
+            <div class="whatsapp-button">
+                <a href="https://api.whatsapp.com/send/?phone=971585661204&text&type=phone_number&app_absent=0" target="_blank" aria-label="Contact us via WhatsApp">
+                    <button class="bg-primary text-black px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
+                        <!-- Иконка WhatsApp слева от текста -->
+                        <i class="fab fa-whatsapp mr-2"></i> 
+                        Contact Us
+                    </button>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 <script>
     // Получаем элементы
     const modal = document.getElementById("myModal");
     const openModalBtn = document.getElementById("openModalBtn");
+    const receiveAlertsBtn = document.querySelector(".open-modal-btn"); // Кнопка во втором блоке
     const closeBtn = document.getElementById("closeBtn");
 
-    // Открыть модальное окно
-    openModalBtn.addEventListener("click", () => {
+    // Функция для открытия модального окна
+    function openModal(scrollToCenter = false) {
         modal.style.display = "block";
-    });
+         // Блокируем прокрутку страницы
 
-    // Закрыть модальное окно
+        if (scrollToCenter) {
+            modal.scrollIntoView({ behavior: "smooth", block: "start" }); // Скроллим вверх
+        }
+    }
+
+    // Верхняя кнопка - открывает без скролла
+    openModalBtn.addEventListener("click", () => openModal(false));
+
+    // Нижняя кнопка - открывает и скроллит вверх
+    receiveAlertsBtn.addEventListener("click", () => openModal(true));
+
+    // Закрываем модальное окно
     closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Включаем прокрутку обратно
     });
 
-    // Закрыть окно, если пользователь кликнул за пределы модального окна
+    // Закрываем окно, если пользователь кликнул за пределы модального окна
     window.addEventListener("click", (event) => {
         if (event.target === modal) {
             modal.style.display = "none";
+            document.body.style.overflow = "auto"; // Включаем прокрутку обратно
         }
     });
 </script>
+
+
+
 
     <script>
         // Получаем все кнопки вопросов
@@ -437,23 +533,7 @@ textarea {
                     <p class="text-gray-600 mb-4">
                         Empowering noon marketplace sellers with AI-driven insights and optimization tools.
                     </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-600 hover:text-primary">
-                            <svg class="h-6 w-6" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-600 hover:text-primary">
-                            <svg class="h-6 w-6" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-600 hover:text-primary">
-                            <svg class="h-6 w-6" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                        </a>
-                    </div>
+                    
                 </div>
 
                 <div>
@@ -462,18 +542,8 @@ textarea {
                         <li>Dubai, UAE</li>
                         <li>+971 58 566 1204</li>
                     </ul>
-                    <a href="https://api.whatsapp.com/send/?phone=77083330201&text&type=phone_number&app_absent=0" target="_blank" aria-label="Contact us via WhatsApp">
-                        <button class="bg-primary text-black px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
-                            Contact Us
-                        </button>
-                    </a>
-                    
-                      
-                    
                 </div>
-            </div>
-
-            
+            </div>            
         </div>
     </footer>
 </body>
