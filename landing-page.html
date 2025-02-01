@@ -162,21 +162,8 @@ textarea {
             background-color: #ffd700;
         }
 
-         /* Стили для рамки вокруг видео */
-         .video-container {
-            border: 10px solid black; /* Черная рамка толщиной 5px */
-            border-radius: 30px; /* Закругление углов */
-            display: inline-block; /* Чтобы рамка обвивала только видео */
-            padding: -20px; /* Отступы внутри рамки */
-        }
+       
 
-        /* Настройки для самого видео */
-        .video-container video {
-            
-            width: 100%; /* Видео растягивается по ширине контейнера */
-            height: auto; /* Высота сохраняет пропорции */
-            border-radius: 20px; /* Закругление углов видео */
-        }
         :root {
             --primary: #ffd700;
         }
@@ -191,28 +178,50 @@ textarea {
         .text-primary {
             color: var(--primary);
         }
-        .hero-video {
-    flex: 0 0 40%; /* Видео будет занимать 40% ширины родительского контейнера */
+        .video-container {
+    flex: 0 0 35%; /* Видео будет занимать 40% ширины родительского контейнера */
     display: flex;
     justify-content: flex-end; /* Выравнивание видео по правому краю */
-    align-items: flex; /* Выровнять видео по верхнему краю */
-    height: 100%; /* Даем контейнеру полную высоту, чтобы видео выравнивалось по верху */
+    align-items: flex-start; /* Выравнивание видео по верхнему краю */
+    height: 100%; /* Даем контейнеру полную высоту */
+    width: auto; /* Ширина контейнера будет зависеть от содержимого */
+    padding: 0; /* Убираем внутренние отступы */
+    margin: 0; /* Убираем внешние отступы */
 }
+
+.video-container video {
+    max-width: 100%; /* Ограничиваем максимальную ширину видео до 80% от ширины контейнера */
+    max-height: 80vh; /* Ограничиваем максимальную высоту до 60% от высоты окна */
+    width: auto; /* Ширина будет пропорциональна высоте */
+    height: auto; /* Высота будет пропорциональна ширине */
+    border: 10px solid black; /* Добавляем рамку только на видео */
+    border-radius: 25px; /* Закругление углов видео */
+    object-fit: contain; /* Сохраняем пропорции видео */
+}
+
+
+
+
+
+
+
 .hidden {
-        display: none;
-    }
+    display: none;
+}
+
+.bg-white:hover {
+    transform: translateY(-5px); /* Поднимание элемента при наведении */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Тень при наведении */
+    transition: all 0.3s ease; /* Плавное изменение при наведении */
+}
 .video-preview__player {
-    width: 100%; /* Видео растягивается по ширине контейнера */
+    width: 100e%; /* Видео растягивается по ширине контейнера */
     height: auto; /* Высота будет пропорциональна */
     max-width: 100%; /* Убираем ограничение по ширине для видео */
     max-height: 80vh; /* Ограничиваем максимальную высоту до 80% от высоты окна */
     border-radius: 140px; /* Устанавливаем радиус округления для углов */
 }
-.bg-white:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
+
 
     </style>
 </head>
@@ -232,7 +241,7 @@ textarea {
                     </p>
                     <div class="flex gap-4">
                         <button id="openModalBtn" class="bg-primary text-black px-8 py-3 rounded-md text-lg font-semibold hover:bg-primary/90 transition-colors">
-                            Try SaleScout for free
+                            Try SaleScout
                         </button>
                         <button class="border border-gray-300 px-8 py-3 rounded-md text-lg font-semibold hover:bg-gray-50 transition-colors">
                             Book a demo →
