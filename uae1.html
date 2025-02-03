@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaleScout - #1 Repricer for Noon Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+    <style>
+
+.notification {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ffd700;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+.receive-alerts {
+    text-align: center; /* Центрирование заголовка и кнопки */
+    margin-top: 60px;
+}
+
+.open-modal-btn {
+    font-size: 18px;
+    padding: 12px 30px;
+    background-color: #ffd700; /* Синий цвет */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.open-modal-btn:hover {
+    background-color: #ffd650; /* Темнее при наведении */
+    transform: scale(1.05);
+}
+
+
+
+.whatsapp-button {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали (если нужно) */
+    width: 100%; /* Растягивание блока на всю ширину */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.whatsapp-button a {
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+}
+
+.whatsapp-button button {
+    font-size: 20px; /* Увеличенный размер текста */
+    padding: 15px 40px; /* Увеличенный размер кнопки */
+    background-color: #25D366; /* Цвет WhatsApp */
+    color: white; /* Белый текст */
+    border: none;
+    border-radius: 8px; /* Закругление краёв */
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Тень */
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    margin-top: 50px; /* Смещаем кнопку вниз на 50px (можно менять это значение) */
+}
+
+.whatsapp-button button:hover {
+    background-color: #1ebd5b; /* Немного темнее при наведении */
+    transform: scale(1.1); /* Лёгкое увеличение */
+}
+
+
+
+.modal {
+            display: none; /* Изначально скрыто */
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        }
+
+        /* Контент модального окна */
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Кнопка закрытия */
+        .close {
+            color: #aaa;
+            font-size: 30px;
+            font-weight: bold;
+            float: right;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+
+
+        
+        /* Пространство между заголовками, текстами и формой */
+/* Пространство между заголовками, текстами и формой */
+h2, p {
+    margin-bottom: 20px; /* Оптимальный отступ снизу */
+}
+
+.contact-form .mb-4 {
+    margin-bottom: 20px; /* Увеличенный отступ между полями */
+}
+p.contact-info {
+    font-size: 14px; /* Делаем текст меньше */
+    color: rgba(0, 0, 0, 0.6); /* Немного прозрачный (60% черного) */
+    margin-bottom: 15px; /* Добавляем небольшой отступ снизу */
+}
+
+button[type="submit"] {
+    margin-top: 20px; /* Отступ сверху для кнопки */
+}
+
+/* Дополнительные отступы в полях формы */
+input[type="text"],
+input[type="email"],
+textarea {
+    margin-bottom: 15px; /* Отступ снизу для каждого поля */
+    padding: 10px; /* Умеренный внутренний отступ для комфортного ввода */
+    width: 100%; /* Чтобы поля были во всю ширину контейнера */
+    border: 1px solid #ccc; /* Легкая граница для визуального разделения */
+    border-radius: 5px; /* Закругленные углы */
+}
+
+
+        /* Стиль формы */
+        .contact-form input,
+        .contact-form button {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .contact-form button {
+            background-color: #ffd700;
+            color: white;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #ffd700;
+        }
+
+       
+
+        :root {
+            --primary: #ffd700;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            letter-spacing: -0.025em;
+        }
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        .text-primary {
+            color: var(--primary);
+        }
+        .video-container {
+    flex: 0 0 35%; /* Видео будет занимать 40% ширины родительского контейнера */
+    display: flex;
+    justify-content: flex-end; /* Выравнивание видео по правому краю */
+    align-items: flex-start; /* Выравнивание видео по верхнему краю */
+    height: 100%; /* Даем контейнеру полную высоту */
+    width: auto; /* Ширина контейнера будет зависеть от содержимого */
+    padding: 0; /* Убираем внутренние отступы */
+    margin: 0; /* Убираем внешние отступы */
+}
+
+.video-container video {
+    max-width: 100%; /* Ограничиваем максимальную ширину видео до 80% от ширины контейнера */
+    max-height: 80vh; /* Ограничиваем максимальную высоту до 60% от высоты окна */
+    width: auto; /* Ширина будет пропорциональна высоте */
+    height: auto; /* Высота будет пропорциональна ширине */
+    border: 10px solid black; /* Добавляем рамку только на видео */
+    border-radius: 25px; /* Закругление углов видео */
+    object-fit: contain; /* Сохраняем пропорции видео */
+}
+
+
+
+
+
+
+
+.hidden {
+    display: none;
+}
+
+
+.video-preview__player {
+    width: 100e%; /* Видео растягивается по ширине контейнера */
+    height: auto; /* Высота будет пропорциональна */
+    max-width: 100%; /* Убираем ограничение по ширине для видео */
+    max-height: 80vh; /* Ограничиваем максимальную высоту до 80% от высоты окна */
+    border-radius: 140px; /* Устанавливаем радиус округления для углов */
+}
+
+
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Hero Section -->
+    <section class="relative py-20 bg-gradient-to-br from-yellow-100/20 to-yellow-50/5 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="flex-1 max-w-2xl">
+                    <h1 class="text-6xl font-bold mb-6 tracking-tight leading-[1.1]">
+                        Control your prices to always be on top at <span class="text-primary">noon</span>
+                    </h1>
+                    
+                    <p class="text-xl text-gray-600 mb-8">
+                        *every 15 minutes
+                    </p>
+                    <div class="flex gap-4">
+                        <button id="openModalBtn" class="bg-primary text-black px-8 py-3 rounded-md text-lg font-semibold hover:bg-primary/90 transition-colors">
+                            Try For Free
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4">
+                        No credit card required. Personal manager with guided setup.
+                    </p>
+                </div>
+                <div class="video-container">
+                    <!-- Вставьте сюда свое видео -->
+                    <video class="video-preview__player" autoplay muted loop playsinline>
+                        <source src="411.mp4" type="video/mp4">
+                    </video>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+<!-- Модальное окно -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeBtn">&times;</span>
+        <h1>Contact Us</h1>
+        <p class="contact-info">Leave your contact information and we'll get back to you shortly.</p>
+
+        <form class="contact-form">
+            <label for="whatsapp">Name</label>
+            <input type="text" id="whatsapp" name="name" placeholder="Your Name" required>
+
+            <label for="company">Phone</label>
+            <input type="text" id="company" name="phone" placeholder="Your Phone" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<!-- Уведомление -->
+<div id="successNotification" class="notification">
+    <p>Your contact has been submitted!</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.querySelector('.contact-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвратить отправку формы
+
+        // Получаем данные из формы
+        const name = document.getElementById('whatsapp').value;
+        const phone = document.getElementById('company').value;
+
+        // Формируем тело запроса
+        const body = {
+            name: name,
+            phone: phone
+        };
+
+        // Отправляем POST запрос через axios с заголовками
+        axios.post('https://uae.app.salescout.me/api/profile/contact-me', body, {
+            headers: {
+                'Content-Type': 'application/json', // Заголовок JSON
+            }
+        })
+            .then(response => {
+                console.log('Response:', response.data);
+
+                // Показать уведомление
+                const notification = document.getElementById('successNotification');
+                notification.style.display = 'block';
+
+                // Закрытие модального окна
+                document.getElementById('myModal').style.display = 'none';
+
+                // Скрыть уведомление через 3 секунды
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.error('Server responded with:', error.response.data);
+                } else if (error.request) {
+                    console.error('No response from server:', error.request);
+                } else {
+                    console.error('Error during request setup:', error.message);
+                }
+                alert('Something went wrong!');
+            });
+    });
+    // Изменяем URL в адресной строке
+    history.pushState({}, '', '/uae1');
+</script>
+
+
+<!-- Reviews Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">What Our Clients Say</h2>
+        <div class="reviews-carousel">
+            <!-- Слайдер для отзывов -->
+            <div class="slick-slider">
+                <div class="review-item rounded-lg shadow-lg bg-white p-8">
+                    <div class="mb-4">
+                        <div class="font-semibold text-center text-xl text-gray-700">Ahmed Al-Farsi</div>
+                        <div class="text-gray-500 text-center mb-2">E-commerce Seller</div>
+                    </div>
+                    <div class="text-gray-600 mb-4 text-center text-lg">
+                        "SaleScout helped me increase my sales significantly by providing real-time price optimization and competitor tracking. I highly recommend it!"
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <!-- Звезды -->
+                        <div class="stars">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-item rounded-lg shadow-lg bg-white p-8">
+                    <div class="mb-4">
+                        <div class="font-semibold text-center text-xl text-gray-700">Fatima Al-Mansoori</div>
+                        <div class="text-gray-500 text-center mb-2">Online Business Owner</div>
+                    </div>
+                    <div class="text-gray-600 mb-4 text-center text-lg">
+                        "The platform is intuitive and easy to use. Our team was able to set it up quickly and start seeing results immediately."
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <!-- Звезды -->
+                        <div class="stars">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-item rounded-lg shadow-lg bg-white p-8">
+                    <div class="mb-4">
+                        <div class="font-semibold text-center text-xl text-gray-700">Omar Al-Zayani</div>
+                        <div class="text-gray-500 text-center mb-2">Virtual Assistant</div>
+                    </div>
+                    <div class="text-gray-600 mb-4 text-center text-lg">
+                        "We've seen a noticeable boost in revenue and have a better grasp on pricing trends. SaleScout is a game changer."
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <!-- Звезды -->
+                        <div class="stars">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Добавьте больше отзывов, если нужно -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Подключение Slick Carousel -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+<!-- Подключение FontAwesome для звезд -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.slick-slider').slick({
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            dots: true,
+            autoplay: true,
+            autoplaySpeed: 5000
+        });
+    });
+</script>
+
+<!-- CSS стили для улучшения дизайна -->
+<style>
+    .slick-slider {
+        position: relative;
+        padding: 20px;
+    }
+    
+    .review-item {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+
+    .slick-prev,
+    .slick-next {
+        background-color: #ffd700;
+        color: white;
+        border-radius: 50%;
+        padding: 10px;
+    }
+
+    .slick-prev:hover,
+    .slick-next:hover {
+        background-color: #ffd700;
+    }
+    
+    .slick-dots li button:before {
+        font-size: 12px;
+        color: #ffe44d;
+    }
+
+    .slick-dots li.slick-active button:before {
+        color: #ffd700;
+    }
+</style>
+
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">When you are not in BuyBox</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Cards -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Stay on Top Without the Effort</h3>
+                    </div>
+                    <p class="text-gray-600">Our AI-powered system continuously adjusts your prices to keep you ahead of competitors. You focus on your business, we handle the competition</p>
+                </div>
+                <!-- Repeat for other features -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Instant Alerts</h3>
+                    </div>
+                    <p class="text-gray-600">Get notified the moment your store loses first place.</p>
+                    <p class="text-gray-600">Receive alerts directly on your phone.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-2 rounded-full bg-primary/10">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Product and Price Monitoring</h3>
+                    </div>
+                    <p class="text-gray-600">Every 3 minutes, the bot checks each of your products on noon.</p>
+                </div>
+            </div>
+            <div class="receive-alerts">
+                <button class="open-modal-btn">
+                    <span>Notify me</span>
+                </button>
+            </div>
+            
+        </div>
+    </section>
+
+<!-- FAQ Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div class="max-w-3xl mx-auto">
+            <div class="space-y-4">
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">What makes SaleScout different from other solutions?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        SaleScout combines AI-powered analytics with deep marketplace expertise specifically for Noon sellers. Our platform provides real-time price optimization, competitor tracking, and automated repricing to ensure you stay competitive.
+                    </div>
+                </div>
+                <!-- Repeat for other questions -->
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">Will anyone know my data?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        We understand your concerns about security and privacy, which is why all your data is encrypted and not shared with third parties.
+                    </div>
+                </div>
+                <!-- Add more FAQ items as needed -->
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">What if my competitors also use your system?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        Our system allows for flexible settings that can help you stay ahead of any competitor.
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">Is there support for setup?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        Yes. Our manager will personally connect with you and assist with the setup.
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">How quickly does the bot update prices?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        The bot reviews all your listings every 3-5 minutes and immediately sends a request to noon to apply the changes.
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <button class="flex justify-between items-center w-full text-left question-toggle">
+                        <span class="font-semibold">How many products can I add to the system?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="mt-2 text-gray-600 answer hidden">
+                        It depends on the selected plan.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <div class="whatsapp-button">
+                <a href="https://api.whatsapp.com/send/?phone=971585661204&text&type=phone_number&app_absent=0" target="_blank" aria-label="Contact us via WhatsApp">
+                    <button class="bg-primary text-black px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
+                        <!-- Иконка WhatsApp слева от текста -->
+                        <i class="fab fa-whatsapp mr-2"></i> 
+                        Contact Us
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    // Получаем элементы
+    const modal = document.getElementById("myModal");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const receiveAlertsBtn = document.querySelector(".open-modal-btn"); // Кнопка во втором блоке
+    const closeBtn = document.getElementById("closeBtn");
+
+    // Функция для открытия модального окна
+    function openModal(scrollToCenter = false) {
+        modal.style.display = "block";
+         // Блокируем прокрутку страницы
+
+        if (scrollToCenter) {
+            modal.scrollIntoView({ behavior: "smooth", block: "start" }); // Скроллим вверх
+        }
+    }
+
+    // Верхняя кнопка - открывает без скролла
+    openModalBtn.addEventListener("click", () => openModal(false));
+
+    // Нижняя кнопка - открывает и скроллит вверх
+    receiveAlertsBtn.addEventListener("click", () => openModal(true));
+
+    // Закрываем модальное окно
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Включаем прокрутку обратно
+    });
+
+    // Закрываем окно, если пользователь кликнул за пределы модального окна
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // Включаем прокрутку обратно
+        }
+    });
+</script>
+
+
+
+
+    <script>
+        // Получаем все кнопки вопросов
+        const questionButtons = document.querySelectorAll('.question-toggle');
+        
+        questionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling; // Получаем следующий элемент, который содержит ответ
+                // Переключаем видимость ответа
+                answer.classList.toggle('hidden');
+            });
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4">SaleScout</h3>
+                    <p class="text-gray-600 mb-4">
+                        Empowering noon marketplace sellers with AI-driven insights and optimization tools.
+                    </p>
+                    
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-600 mb-6">
+                        <li>Dubai, UAE</li>
+                        <li>+971 58 566 1204</li>
+                    </ul>
+                </div>
+            </div>            
+        </div>
+    </footer>
+</body>
+</html>
