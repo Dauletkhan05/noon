@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="ic.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
     <style>
@@ -41,9 +42,23 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
-
+.open-modal-btn1 {
+    font-size: 18px;
+    padding: 12px 30px;
+    background-color: #ffd700; /* Синий цвет */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.open-modal-btn1:hover {
+    background-color: #f3bd09; /* Темнее при наведении */
+    transform: scale(1.05);
+}
 .open-modal-btn:hover {
-    background-color: #ffd650; /* Темнее при наведении */
+    background-color: #f3bd09; /* Темнее при наведении */
     transform: scale(1.05);
 }
 
@@ -206,17 +221,36 @@ textarea {
 
 .video-container video {
     max-width: 100%; /* Ограничиваем максимальную ширину видео до 80% от ширины контейнера */
-    max-height: 80vh; /* Ограничиваем максимальную высоту до 60% от высоты окна */
+    max-height: 77vh; /* Ограничиваем максимальную высоту до 60% от высоты окна */
     width: auto; /* Ширина будет пропорциональна высоте */
     height: auto; /* Высота будет пропорциональна ширине */
-    border: 12px solid black; /* Добавляем рамку только на видео */
+    border: 11px solid black; /* Добавляем рамку только на видео */
     border-radius: 45px; /* Закругление углов видео */
     object-fit: contain; /* Сохраняем пропорции видео */
 }
 
 
 
+.video-container1 {
+    flex: 0 0 49%; /* Видео будет занимать 40% ширины родительского контейнера */
+    display: flex;
+    justify-content: flex-end; /* Выравнивание видео по правому краю */
+    align-items: flex-start; /* Выравнивание видео по верхнему краю */
+    height: 100%; /* Даем контейнеру полную высоту */
+    width: auto; /* Ширина контейнера будет зависеть от содержимого */
+    padding: 0; /* Убираем внутренние отступы */
+    margin: 0; /* Убираем внешние отступы */
+}
 
+.video-container1 video {
+    max-width: 100%; /* Ограничиваем максимальную ширину видео до 80% от ширины контейнера */
+    max-height: 130vh; /* Ограничиваем максимальную высоту до 60% от высоты окна */
+    width: auto; /* Ширина будет пропорциональна высоте */
+    height: auto; /* Высота будет пропорциональна ширине */
+    border: 11px solid black; /* Добавляем рамку только на видео */
+    border-radius: 45px; /* Закругление углов видео */
+    object-fit: contain; /* Сохраняем пропорции видео */
+}
 
 
 
@@ -233,6 +267,13 @@ textarea {
     border-radius: 140px; /* Устанавливаем радиус округления для углов */
 }
 
+.video-preview__player1 {
+    width: 100%; /* Видео растягивается по ширине контейнера */
+    height: auto; /* Высота будет пропорциональна */
+    max-width: 100%; /* Убираем ограничение по ширине для видео */
+    max-height: 80vh; /* Ограничиваем максимальную высоту до 80% от высоты окна */
+    border-radius: 140px; /* Устанавливаем радиус округления для углов */
+}
 
     </style>
 </head>
@@ -243,14 +284,14 @@ textarea {
             <div class="flex flex-col lg:flex-row items-center gap-12">
                 <div class="flex-1 max-w-2xl">
                     <h1 class="text-6xl font-bold mb-6 tracking-tight leading-[1.1]">
-                        Control prices to always stay on top at <span class="text-primary">noon</span>
+                        Get the price list for the top position on <span class="text-primary">noon</span>
                     </h1>
                     
-                    <p class="text-xl text-gray-600 mb-8">
+                    <p class="text-sm text-gray-500 mb-8">
                         *every 15 minutes
                     </p>
                     <div class="flex gap-4">
-                        <button id="openModalBtn" class="bg-primary text-black px-8 py-3 rounded-md text-xl font-semibold hover:bg-primary/90 transition-colors">
+                        <button id="openModalBtn" class="open-modal-btn1" class="bg-primary text-black px-8 py-3 rounded-md text-xl font-semibold hover:bg-primary/90 transition-colors">
                             Try For Free
                         </button>
                     </div>
@@ -273,14 +314,14 @@ textarea {
     <div class="modal-content">
         <span class="close" id="closeBtn">&times;</span>
         <h1>Contact Us</h1>
-        <p class="contact-info">Leave your contact information and we'll get back to you shortly.</p>
+        <p class="contact-info">Enter your contact detail, sand we'll get back to you soon.</p>
 
         <form class="contact-form">
             <label for="whatsapp">Name</label>
             <input type="text" id="whatsapp" name="name" placeholder="Your Name" required>
 
             <label for="company">Phone</label>
-            <input type="text" id="company" name="phone" placeholder="Your Phone" required>
+            <input type="tel" id="company" name="phone" pattern="[0-9]*" inputmode="numeric" placeholder="Enter your number" required>
 
             <button type="submit">Submit</button>
         </form>
@@ -347,7 +388,7 @@ textarea {
         <div class="reviews-carousel">
             <!-- Слайдер для отзывов -->
             <div class="slick-slider">
-                <div class="review-item rounded-lg shadow-lg bg-white p-8">
+                <div class="review-item rounded-lg shadow-lg bg-white p-8 mx-4 my-4">
                     <div class="mb-4">
                         <div class="font-semibold text-center text-xl text-gray-700">Ahmed Al-Farsi</div>
                         <div class="text-gray-500 text-center mb-2">E-commerce Seller</div>
@@ -366,7 +407,7 @@ textarea {
                         </div>
                     </div>
                 </div>
-                <div class="review-item rounded-lg shadow-lg bg-white p-8">
+                <div class="review-item rounded-lg shadow-lg bg-white p-8 mx-4 my-4">
                     <div class="mb-4">
                         <div class="font-semibold text-center text-xl text-gray-700">Fatima Al-Mansoori</div>
                         <div class="text-gray-500 text-center mb-2">Online Business Owner</div>
@@ -385,7 +426,7 @@ textarea {
                         </div>
                     </div>
                 </div>
-                <div class="review-item rounded-lg shadow-lg bg-white p-8">
+                <div class="review-item rounded-lg shadow-lg bg-white p-8 mx-4 my-4">
                     <div class="mb-4">
                         <div class="font-semibold text-center text-xl text-gray-700">Omar Al-Zayani</div>
                         <div class="text-gray-500 text-center mb-2">Virtual assistant</div>
@@ -409,6 +450,7 @@ textarea {
         </div>
     </div>
 </section>
+
 
 <!-- Подключение Slick Carousel -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
@@ -440,7 +482,7 @@ textarea {
         position: relative;
         padding: 20px;
     }
-    
+
     .review-item {
         background-color: #fff;
         border-radius: 10px;
@@ -449,20 +491,51 @@ textarea {
         transition: transform 0.3s ease;
     }
 
-
     .slick-prev,
-    .slick-next {
-        background-color: #ffd700;
-        color: white;
-        border-radius: 50%;
-        padding: 10px;
+.slick-next {
+    background-color: transparent; /* Убираем фон */
+    color: transparent; /* Убираем текст */
+    border: none; /* Убираем границу */
+    padding: 0; /* Убираем отступы */
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.slick-prev::before,
+.slick-next::before {
+    font-family: 'FontAwesome'; /* Используем FontAwesome для стрелок */
+    font-size: 24px;
+    color: #ffd700; /* Цвет стрелки */
+    content: ''; /* Контент для псевдоэлементов */
+}
+
+.slick-prev::before {
+    content: '\f104'; /* Стрелка влево */
+}
+
+.slick-next::before {
+    content: '\f105'; /* Стрелка вправо */
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    color: #ffd700; /* Цвет стрелок при наведении */
+}
+
+
+    /* Центрирование точек */
+    .slick-dots {
+        position: absolute;
+        bottom: 20px; /* Отступ снизу */
+        left: 50%;
+        transform: translateX(-50%); /* Центрирование */
+        display: flex;
+        justify-content: center;
+        gap: 10px;
     }
 
-    .slick-prev:hover,
-    .slick-next:hover {
-        background-color: #ffd700;
-    }
-    
     .slick-dots li button:before {
         font-size: 12px;
         color: #ffe44d;
@@ -471,59 +544,91 @@ textarea {
     .slick-dots li.slick-active button:before {
         color: #ffd700;
     }
+
+    /* Стилизация стрелок */
+    .slick-prev,
+    .slick-next {
+        font-size: 20px; /* Размер стрелок */
+        line-height: 1;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .slick-prev {
+        left: 10px; /* Позиция стрелки влево */
+    }
+
+    .slick-next {
+        right: 10px; /* Позиция стрелки вправо */
+    }
+
 </style>
+
 
 
     <!-- Features Section -->
     <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">When you are not in BuyBox</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Feature Cards -->
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="p-2 rounded-full bg-primary/10">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
+            <h2 class="text-3xl font-bold text-center mb-12">Win More Buy Boxes</h2>
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Левый блок с карточками -->
+                <div class="flex-1">
+                    <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="p-2 rounded-full bg-primary/10">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold">Stay on Top Without the Effort</h3>
                         </div>
-                        <h3 class="text-xl font-semibold">Stay on Top Without the Effort</h3>
+                        <p class="text-gray-600">Our AI-powered system continuously adjusts your prices to keep you ahead of competitors. You focus on your business, we handle the competition</p>
                     </div>
-                    <p class="text-gray-600">Our AI-powered system continuously adjusts your prices to keep you ahead of competitors. You focus on your business, we handle the competition</p>
-                </div>
-                <!-- Repeat for other features -->
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="p-2 rounded-full bg-primary/10">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
+                    <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="p-2 rounded-full bg-primary/10">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold">Instant Alerts</h3>
                         </div>
-                        <h3 class="text-xl font-semibold">Instant Alerts</h3>
+                        <p class="text-gray-600">Get notified the moment your store loses first place.</p>
+                        <p class="text-gray-600">Receive alerts directly on your phone.</p>
                     </div>
-                    <p class="text-gray-600">Get notified the moment your store loses first place.</p>
-                    <p class="text-gray-600">Receive alerts directly on your phone.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="p-2 rounded-full bg-primary/10">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="p-2 rounded-full bg-primary/10">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold">Product and Price Monitoring</h3>
                         </div>
-                        <h3 class="text-xl font-semibold">Product and Price Monitoring</h3>
+                        <p class="text-gray-600">Every 3 minutes, the bot checks each of your products on noon.</p>
                     </div>
-                    <p class="text-gray-600">Every 3 minutes, the bot checks each of your products on noon.</p>
                 </div>
+    
+                <!-- Правый блок с видео -->
+                <div class="flex-1 flex justify-center items-center">
+                    <div class="video-container1">
+                        <!-- Вставьте сюда свое видео -->
+                        <video class="video-preview__player1" autoplay muted loop playsinline>
+                            <source src="14.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                
             </div>
-            <div class="receive-alerts">
+    
+            <div class="receive-alerts mt-8">
                 <button class="open-modal-btn">
                     <span>Notify me</span>
                 </button>
             </div>
-            
         </div>
     </section>
+    
 
 <!-- FAQ Section -->
 <section class="py-20 bg-white">
