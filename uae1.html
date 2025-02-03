@@ -314,19 +314,55 @@ textarea {
     <div class="modal-content">
         <span class="close" id="closeBtn">&times;</span>
         <h1>Contact Us</h1>
-        <p class="contact-info">Enter your contact detail, sand we'll get back to you soon.</p>
+        <p class="contact-info">Enter your contact detail, and we'll get back to you soon.</p>
 
         <form class="contact-form">
-            <label for="whatsapp">Name</label>
-            <input type="text" id="whatsapp" name="name" placeholder="Your Name" required>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
 
-            <label for="company">Phone</label>
-            <input type="tel" id="company" name="phone" pattern="[0-9]*" inputmode="numeric" placeholder="Enter your number" required>
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="+ (___) ___-__-__" maxlength="18" required>
 
             <button type="submit">Submit</button>
         </form>
     </div>
 </div>
+
+<script>
+    const phoneInput = document.getElementById('phone');
+
+    // Функция для применения маски
+    phoneInput.addEventListener('input', function(e) {
+        let value = phoneInput.value;
+
+        // Убираем все нецифровые символы
+        value = value.replace(/\D/g, '');
+
+        // Убираем знак "+" если он не на первом месте
+        if (value.charAt(0) !== '7') {
+            value = '7' + value.substring(1);
+        }
+
+        // Добавляем плюс в начало
+        let formattedValue = '+7 ';
+
+        // Разбиваем на части для более удобного добавления
+        const firstPart = value.substring(1, 4);
+        const secondPart = value.substring(4, 7);
+        const thirdPart = value.substring(7, 9);
+        const fourthPart = value.substring(9, 11);
+
+        // Форматируем номер по маске
+        if (firstPart) formattedValue += `(${firstPart}`;
+        if (secondPart) formattedValue += `) ${secondPart}`;
+        if (thirdPart) formattedValue += `-${thirdPart}`;
+        if (fourthPart) formattedValue += `-${fourthPart}`;
+
+        // Устанавливаем отформатированное значение в поле
+        phoneInput.value = formattedValue;
+    });
+</script>
+
 <!-- Уведомление -->
 <div id="successNotification" class="notification">
     <p>Your contact has been submitted!</p>
