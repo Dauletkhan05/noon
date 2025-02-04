@@ -10,6 +10,37 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
+    <script>
+        window.onload = function() {
+            // Получаем значение параметра utm_source из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const utmSource = urlParams.get('utm_source');
+            const heading = document.querySelector('h1');  // Находим элемент <h1>
+
+            let newText = 'Get the price list for the top position on <span class="text-primary">noon</span>';
+
+            // Меняем текст в зависимости от значения utm_source
+            if (utmSource == '1') {
+                newText = 'Get the price list for the top position on <span class="text-primary">noon</span>';
+            } else if (utmSource == '2') {
+                newText = 'Maximize your sales and profits with the world №1 <span class="text-primary">repricer</span>';
+            } else if (utmSource == '3') {
+                newText = 'Win more BuyBoxes on <span class="text-primary">noon</span>';
+            } else if (utmSource == '4') {
+                newText = 'Boost your sales and profits Instantly';
+            } else if (utmSource == '5') {
+                newText = 'Text for utm_source=5';
+            }else {
+                newText = 'Get the price list for the top position on <span class="text-primary">noon</span>';
+            }
+
+
+            // Изменяем содержимое <h1> на новый текст
+            heading.innerHTML = newText;
+        }
+    </script>
+
+
     <style>
 
 .notification {
@@ -329,6 +360,12 @@ textarea {
     </div>
 </div>
 
+<!-- Уведомление -->
+<div id="successNotification" class="notification" style="display: none;">
+    <p>Your contact has been submitted!</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const phoneInput = document.getElementById('phone');
@@ -358,18 +395,44 @@ textarea {
         document.getElementById("closeBtn").addEventListener("click", function () {
             document.getElementById("myModal").style.display = "none";
         });
-    });
-</script>
+
+        // Функция для получения UTM-параметров
+function getUTMParams() {
+    const params = new URLSearchParams(window.location.search); // Парсим строку запроса
+    let utmSource = params.get("utm_source"); // Получаем значение utm_source
+
+    // Если utm_source пустое или не одно из значений 1, 2, 3, 4, 5, устанавливаем значение 1
+    if (!utmSource || !['1', '2', '3', '4', '5'].includes(utmSource)) {
+        utmSource = '1';
+    }
+
+    return {
+        utm_source: utmSource
+    };
+}
 
 
-<!-- Уведомление -->
-<div id="successNotification" class="notification" style="display: none;">
-    <p>Your contact has been submitted!</p>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+        // Функция для отправки сообщения в Telegram
+        const sendToTelegram = (message) => {
+            const botToken = 'YOUR_BOT_API_TOKEN'; // Замените на ваш токен
+            const chatId = 'YOUR_CHAT_ID'; // Замените на ваш ID чата или ID группы
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            axios.post(url, {
+                chat_id: chatId,
+                text: message // Передаем только текст сообщения
+            })
+            .then(response => {
+                console.log('Message sent to Telegram:', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending message to Telegram:', error);
+            });
+        };
+
+        // Обработчик отправки формы
         document.querySelector('.contact-form').addEventListener('submit', function (event) {
             event.preventDefault(); // Предотвратить отправку формы
 
@@ -382,8 +445,16 @@ textarea {
                 return;
             }
 
-            // Формируем тело запроса
-            const body = { name, phone };
+            // Получаем UTM-параметры
+            const utm = getUTMParams();
+            console.log(utm, 411)
+
+            // Формируем тело запроса, включая UTM-параметры
+            const body = { 
+                name, 
+                phone, 
+                utm: utm.utm_source
+            };
 
             // Отправляем POST запрос через axios
             axios.post('https://uae.app.salescout.me/api/profile/contact-me', body, {
@@ -406,6 +477,12 @@ textarea {
 
                 // Очистка формы
                 event.target.reset();
+
+                // Формируем сообщение для Telegram
+                const message = `New contact form submission:\n\nName: ${name}\nPhone: ${phone}\n\nUTM Site: ${utm.utm_source}`;
+
+                // Отправляем данные в Telegram
+                sendToTelegram(message);
             })
             .catch(error => {
                 if (error.response) {
@@ -420,6 +497,7 @@ textarea {
         });
     });
 </script>
+
 
 <!-- Reviews Section -->
 <section class="py-16 bg-white">
