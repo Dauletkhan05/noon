@@ -310,6 +310,7 @@ textarea {
         </div>
     </section>
 <!-- Модальное окно -->
+<!-- Модальное окно -->
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeBtn">&times;</span>
@@ -329,66 +330,65 @@ textarea {
 </div>
 
 <script>
-    const phoneInput = document.getElementById('phone');
+    document.addEventListener("DOMContentLoaded", function () {
+        const phoneInput = document.getElementById('phone');
 
-    // Функция для применения маски
-    phoneInput.addEventListener('input', function(e) {
-        let value = phoneInput.value;
+        // Функция для применения маски к номеру телефона
+        phoneInput.addEventListener('input', function () {
+            let value = phoneInput.value.replace(/\D/g, ''); // Убираем все нецифровые символы
 
-        // Убираем все нецифровые символы
-        value = value.replace(/\D/g, '');
+            // Всегда начинаем с +971
+            if (!value.startsWith('971')) {
+                value = '971' + value.substring(value.startsWith('0') ? 1 : 0);
+            }
 
-        // Убираем знак "+" если он не на первом месте
-        if (value.charAt(0) !== '7') {
-            value = '7' + value.substring(1);
-        }
+            let formattedValue = '+971 ';
+            const firstPart = value.substring(3, 5); // Первые две цифры после 971
+            const secondPart = value.substring(5, 8);
+            const thirdPart = value.substring(8, 11);
 
-        // Добавляем плюс в начало
-        let formattedValue = '+7 ';
+            if (firstPart) formattedValue += `${firstPart} `;
+            if (secondPart) formattedValue += `${secondPart} `;
+            if (thirdPart) formattedValue += `${thirdPart}`;
 
-        // Разбиваем на части для более удобного добавления
-        const firstPart = value.substring(1, 4);
-        const secondPart = value.substring(4, 7);
-        const thirdPart = value.substring(7, 9);
-        const fourthPart = value.substring(9, 11);
+            phoneInput.value = formattedValue;
+        });
 
-        // Форматируем номер по маске
-        if (firstPart) formattedValue += `(${firstPart}`;
-        if (secondPart) formattedValue += `) ${secondPart}`;
-        if (thirdPart) formattedValue += `-${thirdPart}`;
-        if (fourthPart) formattedValue += `-${fourthPart}`;
-
-        // Устанавливаем отформатированное значение в поле
-        phoneInput.value = formattedValue;
+        // Обработчик закрытия модального окна
+        document.getElementById("closeBtn").addEventListener("click", function () {
+            document.getElementById("myModal").style.display = "none";
+        });
     });
 </script>
 
+
 <!-- Уведомление -->
-<div id="successNotification" class="notification">
+<div id="successNotification" class="notification" style="display: none;">
     <p>Your contact has been submitted!</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    document.querySelector('.contact-form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Предотвратить отправку формы
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector('.contact-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Предотвратить отправку формы
 
-        // Получаем данные из формы
-        const name = document.getElementById('whatsapp').value;
-        const phone = document.getElementById('company').value;
+            // Получаем данные из формы
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
 
-        // Формируем тело запроса
-        const body = {
-            name: name,
-            phone: phone
-        };
-
-        // Отправляем POST запрос через axios с заголовками
-        axios.post('https://uae.app.salescout.me/api/profile/contact-me', body, {
-            headers: {
-                'Content-Type': 'application/json', // Заголовок JSON
+            if (!name || !phone) {
+                alert('Заполните все поля!');
+                return;
             }
-        })
+
+            // Формируем тело запроса
+            const body = { name, phone };
+
+            // Отправляем POST запрос через axios
+            axios.post('https://uae.app.salescout.me/api/profile/contact-me', body, {
+                headers: { 'Content-Type': 'application/json' }
+            })
             .then(response => {
                 console.log('Response:', response.data);
 
@@ -403,20 +403,24 @@ textarea {
                 setTimeout(() => {
                     notification.style.display = 'none';
                 }, 3000);
+
+                // Очистка формы
+                event.target.reset();
             })
             .catch(error => {
                 if (error.response) {
-                    console.error('Server responded with:', error.response.data);
+                    console.error('Ошибка сервера:', error.response.data);
                 } else if (error.request) {
-                    console.error('No response from server:', error.request);
+                    console.error('Сервер не отвечает:', error.request);
                 } else {
-                    console.error('Error during request setup:', error.message);
+                    console.error('Ошибка запроса:', error.message);
                 }
-                alert('Something went wrong!');
+                alert('Ошибка отправки данных! Попробуйте снова.');
             });
+        });
     });
 </script>
-</div>
+
 <!-- Reviews Section -->
 <section class="py-16 bg-white">
     <div class="container mx-auto px-4">
